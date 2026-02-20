@@ -26,7 +26,7 @@ def makeIndex(recipes):
                 index[word].append(recipe['id'])
     return index
 indexes=makeIndex(recipes)
-print(indexes)
+
 
 
 def search_word(word,indexes):
@@ -58,7 +58,8 @@ def idf(word, index, total_recipes):
     if docs_containing_word == 0:
         return 0
     return math.log(total_recipes / docs_containing_word)
-
-print(idf("curri", indexes, 5))  # low because it appears in many recipes
-print(idf("isso", indexes, 5))   # higher because it appears in fewer recipes   
-print(idf("goraka", indexes, 5)) # highest because it appears in only one recipe
+if __name__ == "__main__":
+    print(f'this idf of "coconut": {idf("coconut", indexes, len(recipes))}')  # low because it appears in many recipes
+    print(f'this idf of "isso": {idf("isso", indexes, len(recipes))}')   # higher because it appears in fewer recipes   
+    print(f'this idf of "goraka": {idf("goraka", indexes, len(recipes))}'  ) # highest because it appears in only one recipe
+    print(indexes)

@@ -28,4 +28,4 @@ def tf(query,recipe,indexes):
 def score(query,recipe,indexes,recipes):
     query=stem(query)
     return tf(query,recipe,indexes)*idf(query,indexes,recipes)
-print(score("coconut",recipes[0],indexes,recipes))
+print(f'this->{score("coconut",recipes[0],indexes,recipes)}')
