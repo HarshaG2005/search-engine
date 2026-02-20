@@ -28,4 +28,17 @@ def tf(query,recipe,indexes):
 def score(query,recipe,indexes,recipes):
     query=stem(query)
     return tf(query,recipe,indexes)*idf(query,indexes,recipes)
-print(f'this->{score("coconut",recipes[0],indexes,recipes)}')
+
+def search(query, recipes, indexes):
+    results = []
+    for recipe in recipes:
+        s = score(query, recipe, indexes, recipes)
+        if s > 0:
+            results.append((recipe, s))
+    results.sort(key=lambda x: x[1], reverse=True)
+    return results
+
+if __name__ == "__main__":
+    results = search("curry", recipes, indexes)
+    for recipe, score in results:
+        print(f"{recipe['title']} -> {score}")
