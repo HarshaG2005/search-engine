@@ -1,20 +1,3 @@
-import os
-import sys
-
-# Ensure project root is on sys.path when this file is executed directly
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-from exercises.ex1 import indexes
-# def getGrams(word):
-#     grams=[]
-#     for i in range(len(word)):
-#         if i==len(word)-1:
-#             return grams
-
-#         gram=word[i:i+2]
-#         grams.append(gram)
-#     return grams
-
 def get_bigrams(word):
     word = word.lower()
     return [word[i:i+2] for i in range(len(word)-1)]
@@ -48,3 +31,28 @@ def get_candidates(misspelled, bigram_index):
 misspelled_word = "cari"    
 # candidates = get_candidates(misspelled_word, bigram_index)
 # print(candidates)
+ps = PorterStemmer()
+def spell_correct(query, bigram_index, indexes, threshold=2):
+    # step 1 - check if word exists in index already
+    query = query.lower()
+    query = ps.stem(query)
+    if query in indexes:
+        return query  # no correction needed
+    
+    # step 2 - get candidates from bigram index
+    candidates = get_candidates(query, bigram_index)
+    
+    # step 3 - confirm with edit distance
+    best_match = None
+    best_distance = float('inf')
+    
+    for candidate, shared_bigrams in candidates:
+        distance = edit_distance(query, candidate)
+        if distance < best_distance and distance <= threshold:
+            best_distance = distance
+            best_match = candidate
+    
+    return best_match if best_match else query
+print(spell_correct("cocnut", bigram_index, indexes))    # coconut
+print(spell_correct("prwan", bigram_index, indexes))     # prawn
+print(spell_correct("spicy", bigram_index, indexes))     # spicy (no correction needed)

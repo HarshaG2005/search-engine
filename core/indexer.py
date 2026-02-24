@@ -1,7 +1,3 @@
-from nltk.stem import PorterStemmer
-import math
-
-ps = PorterStemmer()
 recipes = [
     {"id": 1, "title": "Coconut Curry", "text": "coconut milk curry powder"},
     {"id": 2, "title": "Prawn Curry", "text": "prawn in coconut curry isso"},
@@ -49,17 +45,3 @@ def search_2_words(word1,word2,indexes):
         return list(ids2)
     else:
         return None
-# print(search_word("spicy", indexes))        # should return [4, 5]
-# print(search_2_words("prawns", "spici", indexes))  # should return [4]
-# print(search_2_words("coconuts", "curry", indexes)) # what do you expect here?
-
-def idf(word, index, total_recipes):
-    docs_containing_word = len(index.get(word, []))
-    if docs_containing_word == 0:
-        return 0
-    return math.log(total_recipes / docs_containing_word)
-if __name__ == "__main__":
-    print(f'this idf of "coconut": {idf("coconut", indexes, len(recipes))}')  # low because it appears in many recipes
-    print(f'this idf of "isso": {idf("isso", indexes, len(recipes))}')   # higher because it appears in fewer recipes   
-    print(f'this idf of "goraka": {idf("goraka", indexes, len(recipes))}'  ) # highest because it appears in only one recipe
-    print(indexes)
