@@ -30,7 +30,7 @@ def build_bigram_index(indexes):
                 bigram_index[bigram].append(word)
     return bigram_index
 bigram_index = build_bigram_index(indexes)
-print(bigram_index)
+
 def get_candidates(misspelled, bigram_index):
     bigrams = get_bigrams(misspelled)
     
@@ -46,5 +46,5 @@ def get_candidates(misspelled, bigram_index):
     return sorted(candidates.items(), key=lambda x: x[1], reverse=True)
 # Example usage:
 misspelled_word = "cari"    
-candidates = get_candidates(misspelled_word, bigram_index)
-print(candidates)
+# candidates = get_candidates(misspelled_word, bigram_index)
+# print(candidates)
