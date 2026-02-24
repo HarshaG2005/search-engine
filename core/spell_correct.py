@@ -1,3 +1,11 @@
+from nltk.stem import PorterStemmer
+from nltk.metrics.distance import edit_distance
+from indexer import indexes
+from preprocesser import preprocess
+
+ps=PorterStemmer()
+
+
 def get_bigrams(word):
     word = word.lower()
     return [word[i:i+2] for i in range(len(word)-1)]
@@ -27,15 +35,14 @@ def get_candidates(misspelled, bigram_index):
     
     # sort by most shared bigrams
     return sorted(candidates.items(), key=lambda x: x[1], reverse=True)
-# Example usage:
 misspelled_word = "cari"    
 # candidates = get_candidates(misspelled_word, bigram_index)
 # print(candidates)
-ps = PorterStemmer()
+
 def spell_correct(query, bigram_index, indexes, threshold=2):
     # step 1 - check if word exists in index already
-    query = query.lower()
-    query = ps.stem(query)
+    query = preprocess(query)[0]  # preprocess and take the first word (assuming single word input)
+    
     if query in indexes:
         return query  # no correction needed
     
@@ -53,6 +60,6 @@ def spell_correct(query, bigram_index, indexes, threshold=2):
             best_match = candidate
     
     return best_match if best_match else query
-print(spell_correct("cocnut", bigram_index, indexes))    # coconut
+print(spell_correct("cari", bigram_index, indexes))    # coconut
 print(spell_correct("prwan", bigram_index, indexes))     # prawn
-print(spell_correct("spicy", bigram_index, indexes))     # spicy (no correction needed)
+print(spell_correct("spic", bigram_index, indexes))     # spici

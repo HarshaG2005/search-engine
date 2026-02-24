@@ -1,3 +1,9 @@
+from nltk.stem import PorterStemmer
+import math 
+from preprocesser import preprocess
+ps=PorterStemmer()
+
+
 recipes = [
     {"id": 1, "title": "Coconut Curry", "text": "coconut milk curry powder"},
     {"id": 2, "title": "Prawn Curry", "text": "prawn in coconut curry isso"},
@@ -5,17 +11,15 @@ recipes = [
     {"id": 4, "title": "Isso Curry", "text": "isso prawn spicy curry"},
     {"id": 5, "title": "Fish Ambul Thiyal", "text": "fish sour spicy in goraka"},
 ]
+
+
+
 def makeIndex(recipes):
     index={}
-    stopwords = {"and", "the", "with", "a", "of", "in", "is"}
     for recipe in recipes:
         content=recipe['text']+" "+recipe['title']#to include the title in the search   
-        words=content.split()
+        words=preprocess(content)
         for word in words:
-            word=word.lower()#to make the search case insensitive
-            word=ps.stem(word)
-            if word in stopwords:
-                continue
             if word not in index:  
                 index[word]=[]
             if recipe['id'] not in index[word]:
@@ -30,6 +34,9 @@ def search_word(word,indexes):
     word=ps.stem(word)
     return indexes.get(word,[])
  
+
+
+
 def search_2_words(word1,word2,indexes):
     word1=word1.lower()#to make the search case insensitive
     word2=word2.lower()#to make the search case insensitive
@@ -45,3 +52,5 @@ def search_2_words(word1,word2,indexes):
         return list(ids2)
     else:
         return None
+if __name__ == "__main__":
+    print(makeIndex(recipes))
