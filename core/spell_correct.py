@@ -1,7 +1,11 @@
-from nltk.stem import PorterStemmer
+import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from core.indexer import indexes
 from nltk.metrics.distance import edit_distance
-from indexer import indexes
-from preprocesser import preprocess
+from nltk.stem import PorterStemmer
+from core.preprocesser import preprocess
 
 ps=PorterStemmer()
 

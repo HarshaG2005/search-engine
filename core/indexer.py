@@ -1,6 +1,13 @@
+import os
+import sys
+
 from nltk.stem import PorterStemmer
-import math 
-from preprocesser import preprocess
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+import math
+
+from core.preprocesser import preprocess
+
 ps=PorterStemmer()
 
 
