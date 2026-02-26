@@ -1,10 +1,12 @@
 import math
 import os
 import sys
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from core.indexer import indexes, recipes
 from nltk.stem import PorterStemmer
+
+from core.indexer import indexes, recipes
 
 ps = PorterStemmer()
 
