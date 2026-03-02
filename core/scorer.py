@@ -4,17 +4,17 @@ import sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-from nltk.stem import PorterStemmer
+from core.indexer import indexes
+import data.recipes as recipes
+from core.preprocessor import preprocess
 
-from core.indexer import indexes, recipes
 
-ps = PorterStemmer()
 
 
 def stem(word):
     word = word.lower()
     return ps.stem(word)
-
+    
 
 def idf(query, indexes, recipes):
     docs_containing_query = indexes.get(query, [])
@@ -24,9 +24,7 @@ def idf(query, indexes, recipes):
 
 
 def tf(query, recipe, indexes):
-    content = recipe["text"] + " " + recipe["title"]
-    content = content.lower().split()
-    words = [ps.stem(word) for word in content]
+    words=preprocess(recipe["title"])
     count = words.count(query)
     return count / len(words)
 
