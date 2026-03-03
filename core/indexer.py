@@ -1,24 +1,41 @@
-import os
-import sys
-import json
 import collections
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+import json
+import os
 import math
 from core.preprocesser import preprocess
-
 with open(os.path.join(os.path.dirname(__file__), "../data/recipe.json")) as f:
     recipes = json.load(f)
 
-def makeIndex(recipes):
-    index = collections.defaultdict(set)
-    for recipe in recipes.values():
-        content = recipe["title"] + " " + " ".join(recipe["ingredients"])
-        words = preprocess(content)
-        for word in words:
-           index[word].add(recipe["id"])
-    return index
+def build_index(recipes):
+    # term -> doc_id -> stats
+    index = collections.defaultdict(lambda: collections.defaultdict(lambda: {
+        "tf": 0,
+        "pos": [],
+        "fields": {"title": 0, "ingredients": 0},
+    }))
+    doc_len = {}  # doc_id -> total tokens indexed
 
-indexes = makeIndex(recipes)
+    for recipe in recipes:
+        doc_id = recipe["id"]
+
+        title_tokens = preprocess(recipe.get("title", ""))
+        ing_tokens = preprocess(" ".join(recipe.get("ingredients", [])))
+
+        # We create one token stream so positions are consistent
+        tokens = []
+        tokens.extend(("title", t) for t in title_tokens)
+        tokens.extend(("ingredients", t) for t in ing_tokens)
+
+        doc_len[doc_id] = len(tokens)
+
+        for position, (field, term) in enumerate(tokens):
+            posting = index[term][doc_id]
+            posting["tf"] += 1
+            posting["pos"].append(position)
+            posting["fields"][field] += 1
+
+    return index, doc_len
+indexes = build_index(recipes)
 
 if __name__ == "__main__":
-    print(makeIndex(recipes))
+    print(indexes)

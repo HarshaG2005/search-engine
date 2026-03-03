@@ -1,5 +1,5 @@
-{
-    "12": {
+[
+     {
         "id": 12,
         "title": "Chicken curry",
         "url": "…",
@@ -9,7 +9,7 @@
             "crawled_at": "2026-03-01"
        }
     },
-    "13": {
+    {
                 "id": 13,
                 "title": "Beef stew",
                 "url": "…",
@@ -19,7 +19,7 @@
                     "crawled_at": "2026-03-01"
        }
     },
-    "14": {
+     {
         "id": 14,
         "title": "Vegetable stir-fry",
         "url": "…",
@@ -29,7 +29,7 @@
             "crawled_at": "2026-03-01"
        }
     },
-    "15": {
+     {
         "id": 15,
         "title": "Pasta primavera",
         "url": "…",
@@ -39,7 +39,7 @@
             "crawled_at": "2026-03-01"
        }
     },
-    "16": {
+     {
         "id": 16,
         "title": "Fish tacos",
         "url": "…",
@@ -49,7 +49,7 @@
             "crawled_at": "2026-03-01"
        }
     },
-    "17": {
+     {
         "id": 17,
         "title": "Lentil soup",
         "url": "…",
@@ -59,7 +59,7 @@
             "crawled_at": "2026-03-01"
        }
     },
-    "18": {
+    {
         "id": 18,
         "title": "Grilled cheese sandwich",
         "url": "…",
@@ -69,7 +69,7 @@
             "crawled_at": "2026-03-01"
        }
     },
-    "19": {
+    {
         "id": 19,
         "title": "Caesar salad",
         "url": "…",
@@ -79,7 +79,7 @@
             "crawled_at": "2026-03-01"
        }
     },
-    "20": {
+ {
         "id": 20,
         "title": "Chocolate chip cookies",
         "url": "…",
@@ -89,7 +89,7 @@
             "crawled_at": "2026-03-01"
        }
     },
-    "21": {
+    {
             "id": 21,
             "title": "Banana bread",
             "url": "…",
@@ -99,7 +99,7 @@
                 "crawled_at": "2026-03-01"
         }
         },
-        "22": {
+        {
             "id": 22,
             "title": "Mushroom risotto",
             "url": "…",
@@ -109,7 +109,7 @@
                 "crawled_at": "2026-03-01"
         }
         },
-        "23": {
+         {
             "id": 23,
             "title": "Shrimp scampi",
             "url": "…",
@@ -119,7 +119,7 @@
                 "crawled_at": "2026-03-01"
         }
         },
-        "24": {
+        {
             "id": 24,
             "title": "Quinoa salad",
             "url": "…",
@@ -129,7 +129,7 @@
                 "crawled_at": "2026-03-01"
         }
         },
-        "25": {
+         {
             "id": 25,
             "title": "Pancakes",
             "url": "...",
@@ -139,7 +139,7 @@
                 "crawled_at": "2026-03-01"
         }
         }
-  }
+    ]
 
 
 

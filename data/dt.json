@@ -1,9 +1,7 @@
-{
-    "1":{
+[{
         "title": "Spaghetti Carbonara",
         "ingredients": ["spaghetti", "eggs", "parmesan cheese", "bacon", "black pepper"],
         "text": "A classic Italian pasta dish made with eggs, cheese, pancetta, and pepper."
     }
-
-}
+]
     
