@@ -3,6 +3,7 @@ import json
 import os
 import math
 from core.preprocesser import preprocess
+from storage import save
 with open(os.path.join(os.path.dirname(__file__), "../data/recipe.json")) as f:
     recipes = json.load(f)
 
@@ -35,7 +36,8 @@ def build_index(recipes):
             posting["fields"][field] += 1
 
     return index, doc_len
-indexes = build_index(recipes)
+indexes,doc_len = build_index(recipes)
+avg_doc_len = sum(doc_len.values()) / len(doc_len) if doc_len else 0
 
 if __name__ == "__main__":
-    print(indexes)
+    save(indexes, doc_len, avg_doc_len)
