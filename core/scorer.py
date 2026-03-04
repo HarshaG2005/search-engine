@@ -17,7 +17,7 @@ def stem(word):
     
 
 def idf(query, indexes, recipes):
-    docs_containing_query = indexes.get(query, [])
+    docs_containing_query = indexes[query]
     if len(docs_containing_query) == 0:
         return 0
     return math.log(len(recipes) / len(docs_containing_query))
