@@ -1,10 +1,7 @@
 import os
 import sys
-
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
 from nltk.metrics.distance import edit_distance
-
 from core.indexer import indexes
 from core.preprocesser import preprocess
 
@@ -51,9 +48,7 @@ misspelled_word = "cari"
 
 def spell_correct(query, bigram_index, indexes, threshold=2):
     # step 1 - check if word exists in index already
-    query = preprocess(query)[
-        0
-    ]  # preprocess and take the first word (assuming single word input)
+    # preprocess and take the first word (assuming single word input)
 
     if query in indexes:
         return query  # no correction needed
@@ -73,7 +68,14 @@ def spell_correct(query, bigram_index, indexes, threshold=2):
 
     return best_match if best_match else query
 
-
-print(spell_correct("cari", bigram_index, indexes))  # coconut
-print(spell_correct("prwan", bigram_index, indexes))  # prawn
-print(spell_correct("spic", bigram_index, indexes))  # spici
+# print(spell_correct("spic", bigram_index, indexes))  # spici
+def transform(raw_query):
+    tokens = preprocess(raw_query)        # ["chiken", "cocnut", "curi"]
+    
+    corrected = []
+    for token in tokens:
+        fixed = spell_correct(token, bigram_index, indexes) # one token at a time
+        corrected.append(fixed)
+    
+    return corrected     
+print(transform("chikin in cary"))  # ["chicken", "coconut", "curri"]
