@@ -36,8 +36,8 @@ def build_index(recipes):
             posting["fields"][field] += 1
 
     return index, doc_len
-indexes,doc_len = build_index(recipes)
-avg_doc_len = sum(doc_len.values()) / len(doc_len) if doc_len else 0
 
 if __name__ == "__main__":
+    indexes,doc_len = build_index(recipes)
+    avg_doc_len = sum(doc_len.values()) / len(doc_len) if doc_len else 0
     save(indexes, doc_len, avg_doc_len)

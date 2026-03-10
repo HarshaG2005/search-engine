@@ -1,9 +1,12 @@
 import os
 import sys
+import json
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from nltk.metrics.distance import edit_distance
-from core.indexer import indexes
 from core.preprocesser import preprocess
+with open(os.path.join(os.path.dirname(__file__), "../index_data/index.json")) as f:
+    indexes = json.load(f)
+
 
 
 def get_bigrams(word):
@@ -78,4 +81,5 @@ def transform(raw_query):
         corrected.append(fixed)
     
     return corrected     
-print(transform("chikin in cary"))  # ["chicken", "coconut", "curri"]
+if __name__ == "__main__":
+    print(transform("chikin in cary"))  # ["chicken","curri"]

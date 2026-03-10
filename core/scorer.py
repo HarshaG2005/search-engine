@@ -7,13 +7,6 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from core.indexer import indexes
 import data.recipes as recipes
 from core.preprocessor import preprocess
-
-
-
-
-def stem(word):
-    word = word.lower()
-    return ps.stem(word)
     
 
 def idf(query, indexes, recipes):
@@ -30,7 +23,8 @@ def tf(query, recipe, indexes):
 
 
 def score(query, recipe, indexes, recipes):
-    query = stem(query)
+    query = preprocess(query)[0]
+    # Assuming tf is calculated elsewhere or passed as a parameter
     return tf(query, recipe, indexes) * idf(query, indexes, recipes)
 
 
