@@ -1,14 +1,13 @@
 import string
-
 from nltk import PorterStemmer
 from nltk.corpus import stopwords
-
 stopwords = set(stopwords.words("english"))
 
 ps = PorterStemmer()
 
 
 def preprocess(text):
+    """Lowercase, remove punctuation, tokenize, remove stopwords, and stem."""
     text = text.lower()
     text = text.translate(str.maketrans("", "", string.punctuation))
     words = text.split()

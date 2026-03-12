@@ -1,14 +1,3 @@
-import math
-import os
-import sys
-import json
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-from core.preprocesser import preprocess
-from core.spell_correct import spell_correct, bigram_index,transform
-from storage import load
-
-
-index, doc_len, avg_doc_len = load()
 
 # weights
 K1 = 1.5
@@ -61,44 +50,14 @@ def proximity_boost(query_terms, doc_id):
     # average proximity across all term pairs
     return 1 + (total / pairs)
 
-def search(raw_query, top_k=5):
-    query_terms = transform(raw_query)   # spell correct + preprocess
-    N = len(doc_len)
-    scores = {}
 
-    for term in query_terms:
-        if term not in index:
-            continue
-        df = len(index[term])
+def format_results(ranked, top_k=5):
+    results = []
+    for doc_id, score in ranked[:top_k]:
+        recipe = recipe_map.get(doc_id)
+        results.append({
+            "title": recipe["title"],
+            "score": round(score, 4)
+        })
+    return results
 
-        for doc_id, posting in index[term].items():
-            tf = posting["tf"]
-            dl = doc_len[doc_id]
-
-            score = bm25(tf, df, N, dl, avg_doc_len)
-            score *= field_boost(posting)
-
-            scores[doc_id] = scores.get(doc_id, 0) + score
-
-    # apply proximity boost after accumulating BM25 + field scores
-    for doc_id in scores:
-        scores[doc_id] *= proximity_boost(query_terms, doc_id)
-
-    ranked = sorted(scores.items(), key=lambda x: x[1], reverse=True)
-    return ranked[:top_k]
-
-
-if __name__ == "__main__":
-    query = "stews"
-    results = search(query)
-    print(f"\nResults for '{query}':")
-    for doc_id, score in results:
-        print(f"  doc {doc_id} → score: {score:.4f}")
-# ```
-
-# ---
-
-# **Why proximity is applied after the main loop:**
-# ```
-# BM25 + field → accumulated per term  (inside loop)
-# proximity    → needs ALL terms done  (outside loop)

@@ -1,20 +1,13 @@
-import os
-import sys
-import json
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from nltk.metrics.distance import edit_distance
-from core.preprocesser import preprocess
-with open(os.path.join(os.path.dirname(__file__), "../index_data/index.json")) as f:
-    indexes = json.load(f)
-
-
 
 def get_bigrams(word):
+    """Generate bigrams from a word."""
     word = word.lower()
     return [word[i : i + 2] for i in range(len(word) - 1)]
 
 
 def build_bigram_index(indexes):
+    """Builds a bigram index from the existing term index."""
     bigram_index = {}
     for word in indexes.keys():
         bigrams = get_bigrams(word)
@@ -25,11 +18,8 @@ def build_bigram_index(indexes):
                 bigram_index[bigram].append(word)
     return bigram_index
 
-
-bigram_index = build_bigram_index(indexes)
-
-
 def get_candidates(misspelled, bigram_index):
+    """Get candidate corrections based on shared bigrams."""
     bigrams = get_bigrams(misspelled)
 
     candidates = {}
@@ -44,15 +34,12 @@ def get_candidates(misspelled, bigram_index):
     return sorted(candidates.items(), key=lambda x: x[1], reverse=True)
 
 
-misspelled_word = "cari"
-# candidates = get_candidates(misspelled_word, bigram_index)
-# print(candidates)
 
 
 def spell_correct(query, bigram_index, indexes, threshold=2):
+    """Corrects a misspelled query term using bigram candidates and edit distance."""
     # step 1 - check if word exists in index already
     # preprocess and take the first word (assuming single word input)
-
     if query in indexes:
         return query  # no correction needed
 
@@ -71,7 +58,7 @@ def spell_correct(query, bigram_index, indexes, threshold=2):
 
     return best_match if best_match else query
 
-# print(spell_correct("spic", bigram_index, indexes))  # spici
+
 def transform(raw_query):
     tokens = preprocess(raw_query)        # ["chiken", "cocnut", "curi"]
     
@@ -81,5 +68,3 @@ def transform(raw_query):
         corrected.append(fixed)
     
     return corrected     
-if __name__ == "__main__":
-    print(transform("chikin in cary"))  # ["chicken","curri"]

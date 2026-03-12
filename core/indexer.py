@@ -1,13 +1,8 @@
 import collections
-import json
-import os
 import math
 from core.preprocesser import preprocess
-from storage import save
-with open(os.path.join(os.path.dirname(__file__), "../data/recipe.json")) as f:
-    recipes = json.load(f)
-
 def build_index(recipes):
+    """Builds an inverted index from the list of recipes."""
     # term -> doc_id -> stats
     index = collections.defaultdict(lambda: collections.defaultdict(lambda: {
         "tf": 0,
@@ -15,9 +10,14 @@ def build_index(recipes):
         "fields": {"title": 0, "ingredients": 0},
     }))
     doc_len = {}  # doc_id -> total tokens indexed
+    recipe_map = {r["id"]: r for r in recipes}  # for easy lookup later
 
     for recipe in recipes:
         doc_id = recipe["id"]
+        recipe_map[doc_id] = {
+            "title": recipe.get("title", ""),
+            "ingredients": recipe.get("ingredients", []),
+        }
 
         title_tokens = preprocess(recipe.get("title", ""))
         ing_tokens = preprocess(" ".join(recipe.get("ingredients", [])))
@@ -35,9 +35,5 @@ def build_index(recipes):
             posting["pos"].append(position)
             posting["fields"][field] += 1
 
-    return index, doc_len
+    return index, doc_len,recipe_map
 
-if __name__ == "__main__":
-    indexes,doc_len = build_index(recipes)
-    avg_doc_len = sum(doc_len.values()) / len(doc_len) if doc_len else 0
-    save(indexes, doc_len, avg_doc_len)
