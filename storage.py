@@ -17,3 +17,7 @@ def load():
     avg_doc_len = json.loads((out_dir/ "avg_doc_len.json").read_text(encoding="utf-8"))
     recipe_map = json.loads((out_dir/ "recipe_map.json").read_text(encoding="utf-8"))   
     return index, doc_len, avg_doc_len, recipe_map
+def load_recipe():
+    with open(Path("data/recipe.json"), encoding="utf-8") as f:
+        recipes = json.load(f)
+    return recipes
