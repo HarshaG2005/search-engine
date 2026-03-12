@@ -4,7 +4,7 @@ import sys
 import json
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from core.preprocesser import preprocess
-from core.spell_correct import spell_correct, bigram_index,transform
+from core.spell_correct import spell_correct,transform
 from storage import load
 from core.query import bm25, field_boost, proximity_boost, format_results
 
@@ -12,7 +12,7 @@ from core.query import bm25, field_boost, proximity_boost, format_results
 index, doc_len, avg_doc_len, recipe_map = load()
 
 def search(raw_query, top_k=5):
-    query_terms = transform(raw_query)   # spell correct + preprocess
+    query_terms = transform(raw_query,index)   # spell correct + preprocess
     N = len(doc_len)
     scores = {}
 
@@ -32,8 +32,8 @@ def search(raw_query, top_k=5):
 
     # apply proximity boost after accumulating BM25 + field scores
     for doc_id in scores:
-        scores[doc_id] *= proximity_boost(query_terms, doc_id)
+        scores[doc_id] *= proximity_boost(query_terms, doc_id, index)
 
     ranked = sorted(scores.items(), key=lambda x: x[1], reverse=True)
-    return format_results(ranked, top_k)
-
+    return format_results(ranked, top_k, recipe_map)
+print(search("chiken cocnut curi", top_k=3))

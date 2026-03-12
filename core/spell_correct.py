@@ -1,4 +1,5 @@
 from nltk.metrics.distance import edit_distance
+from core.preprocesser import preprocess
 
 def get_bigrams(word):
     """Generate bigrams from a word."""
@@ -18,10 +19,10 @@ def build_bigram_index(indexes):
                 bigram_index[bigram].append(word)
     return bigram_index
 
-def get_candidates(misspelled, bigram_index):
+def get_candidates(misspelled,indexes):
     """Get candidate corrections based on shared bigrams."""
     bigrams = get_bigrams(misspelled)
-
+    bigram_index = build_bigram_index(indexes)  # build bigram index from current term index
     candidates = {}
     for bigram in bigrams:
         matches = bigram_index.get(bigram, [])
@@ -36,7 +37,7 @@ def get_candidates(misspelled, bigram_index):
 
 
 
-def spell_correct(query, bigram_index, indexes, threshold=2):
+def spell_correct(query,indexes, threshold=2):
     """Corrects a misspelled query term using bigram candidates and edit distance."""
     # step 1 - check if word exists in index already
     # preprocess and take the first word (assuming single word input)
@@ -44,7 +45,7 @@ def spell_correct(query, bigram_index, indexes, threshold=2):
         return query  # no correction needed
 
     # step 2 - get candidates from bigram index
-    candidates = get_candidates(query, bigram_index)
+    candidates = get_candidates(query, indexes)
 
     # step 3 - confirm with edit distance
     best_match = None
@@ -59,12 +60,12 @@ def spell_correct(query, bigram_index, indexes, threshold=2):
     return best_match if best_match else query
 
 
-def transform(raw_query):
+def transform(raw_query,indexes):
     tokens = preprocess(raw_query)        # ["chiken", "cocnut", "curi"]
     
     corrected = []
     for token in tokens:
-        fixed = spell_correct(token, bigram_index, indexes) # one token at a time
+        fixed = spell_correct(token, indexes) # one token at a time
         corrected.append(fixed)
     
     return corrected     

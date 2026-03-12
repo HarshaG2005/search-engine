@@ -1,3 +1,4 @@
+import math
 
 # weights
 K1 = 1.5
@@ -23,7 +24,7 @@ def proximity(pos1, pos2):
                 min_gap = gap
     return 1 / (1 + min_gap)
 
-def proximity_boost(query_terms, doc_id):
+def proximity_boost(query_terms, doc_id,index):
     # only makes sense if query has more than one term
     if len(query_terms) < 2:
         return 1.0
@@ -51,7 +52,7 @@ def proximity_boost(query_terms, doc_id):
     return 1 + (total / pairs)
 
 
-def format_results(ranked, top_k=5):
+def format_results(ranked, top_k=5,recipe_map=None):
     results = []
     for doc_id, score in ranked[:top_k]:
         recipe = recipe_map.get(doc_id)
