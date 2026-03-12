@@ -19,10 +19,10 @@ def build_bigram_index(indexes):
                 bigram_index[bigram].append(word)
     return bigram_index
 
-def get_candidates(misspelled,indexes):
+def get_candidates(misspelled,bigram_index):
     """Get candidate corrections based on shared bigrams."""
     bigrams = get_bigrams(misspelled)
-    bigram_index = build_bigram_index(indexes)  # build bigram index from current term index
+    
     candidates = {}
     for bigram in bigrams:
         matches = bigram_index.get(bigram, [])
@@ -37,7 +37,7 @@ def get_candidates(misspelled,indexes):
 
 
 
-def spell_correct(query,indexes, threshold=2):
+def spell_correct(query,indexes,bigram_index, threshold=2):
     """Corrects a misspelled query term using bigram candidates and edit distance."""
     # step 1 - check if word exists in index already
     # preprocess and take the first word (assuming single word input)
@@ -45,7 +45,7 @@ def spell_correct(query,indexes, threshold=2):
         return query  # no correction needed
 
     # step 2 - get candidates from bigram index
-    candidates = get_candidates(query, indexes)
+    candidates = get_candidates(query, bigram_index)
 
     # step 3 - confirm with edit distance
     best_match = None
@@ -61,11 +61,12 @@ def spell_correct(query,indexes, threshold=2):
 
 
 def transform(raw_query,indexes):
-    tokens = preprocess(raw_query)        # ["chiken", "cocnut", "curi"]
+    tokens = preprocess(raw_query)   # ["chiken", "cocnut", "curi"]
+    bigram_index = build_bigram_index(indexes)  # build bigram index from current term index
     
     corrected = []
     for token in tokens:
-        fixed = spell_correct(token, indexes) # one token at a time
+        fixed = spell_correct(token, indexes, bigram_index, threshold=2) # one token at a time
         corrected.append(fixed)
     
     return corrected     
