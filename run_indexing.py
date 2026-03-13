@@ -4,7 +4,7 @@ import sys
 import collections
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from core.indexer import build_index
-from core.preprocesser import preprocess
+from core.preprocessor import preprocess
 from storage import save,load_recipe
 recipes = load_recipe()
 

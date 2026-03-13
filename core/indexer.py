@@ -1,6 +1,6 @@
 import collections
 import math
-from core.preprocesser import preprocess
+from core.preprocessor import preprocess
 def build_index(recipes):
     """Builds an inverted index from the list of recipes."""
     # term -> doc_id -> stats

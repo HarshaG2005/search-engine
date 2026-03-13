@@ -1,5 +1,5 @@
 from nltk.metrics.distance import edit_distance
-from core.preprocesser import preprocess
+from core.preprocessor import preprocess
 
 def get_bigrams(word):
     """Generate bigrams from a word."""
