@@ -8,10 +8,10 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from search import search
 from storage import load_recipe
-recipes = load_recipe()
+
 
 def test_search():
-   
+    recipes = load_recipe()
     # Test case 1: Basic search
     results = search("chicken curry")
     assert len(results) > 0

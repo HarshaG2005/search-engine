@@ -6,14 +6,19 @@ B = 0.75
 G_TITLE = 0.7
 G_INGREDIENTS = 0.3
 
+
 def bm25(tf, df, N, doc_len, avg_doc_len):
     idf = math.log(N / df)
     tf_score = ((K1 + 1) * tf) / (K1 * ((1 - B) + B * (doc_len / avg_doc_len)) + tf)
     return idf * tf_score
 
+
 def field_boost(posting):
-    return 1 + (G_TITLE * posting["fields"]["title"] + 
-                G_INGREDIENTS * posting["fields"]["ingredients"])
+    return 1 + (
+        G_TITLE * posting["fields"]["title"]
+        + G_INGREDIENTS * posting["fields"]["ingredients"]
+    )
+
 
 def proximity(pos1, pos2):
     min_gap = float("inf")
@@ -24,11 +29,12 @@ def proximity(pos1, pos2):
                 min_gap = gap
     return 1 / (1 + min_gap)
 
-def proximity_boost(query_terms, doc_id,index):
+
+def proximity_boost(query_terms, doc_id, index):
     # only makes sense if query has more than one term
     if len(query_terms) < 2:
         return 1.0
-    
+
     total = 0
     pairs = 0
 
@@ -38,8 +44,12 @@ def proximity_boost(query_terms, doc_id,index):
             t2 = query_terms[j]
 
             # both terms must exist in this doc
-            if t1 in index and doc_id in index[t1] and \
-               t2 in index and doc_id in index[t2]:
+            if (
+                t1 in index
+                and doc_id in index[t1]
+                and t2 in index
+                and doc_id in index[t2]
+            ):
                 pos1 = index[t1][doc_id]["pos"]
                 pos2 = index[t2][doc_id]["pos"]
                 total += proximity(pos1, pos2)
@@ -47,18 +57,14 @@ def proximity_boost(query_terms, doc_id,index):
 
     if pairs == 0:
         return 1.0
-    
+
     # average proximity across all term pairs
     return 1 + (total / pairs)
 
 
-def format_results(ranked, top_k=5,recipe_map=None):
+def format_results(ranked, top_k=5, recipe_map=None):
     results = []
     for doc_id, score in ranked[:top_k]:
         recipe = recipe_map.get(doc_id)
-        results.append({
-            "title": recipe["title"],
-            "score": round(score, 4)
-        })
+        results.append({"title": recipe["title"], "score": round(score, 4)})
     return results
-

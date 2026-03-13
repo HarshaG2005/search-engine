@@ -1,16 +1,23 @@
 import collections
 import math
+
 from core.preprocessor import preprocess
+
+
 def build_index(recipes):
     """Builds an inverted index from the list of recipes."""
     # term -> doc_id -> stats
-    index = collections.defaultdict(lambda: collections.defaultdict(lambda: {
-        "tf": 0,
-        "pos": [],
-        "fields": {"title": 0, "ingredients": 0},
-    }))
+    index = collections.defaultdict(
+        lambda: collections.defaultdict(
+            lambda: {
+                "tf": 0,
+                "pos": [],
+                "fields": {"title": 0, "ingredients": 0},
+            }
+        )
+    )
     doc_len = {}  # doc_id -> total tokens indexed
-    recipe_map = {r["id"]: r for r in recipes}  # for easy lookup later
+    recipe_map = {}  # for easy lookup later
 
     for recipe in recipes:
         doc_id = recipe["id"]
@@ -35,5 +42,4 @@ def build_index(recipes):
             posting["pos"].append(position)
             posting["fields"][field] += 1
 
-    return index, doc_len,recipe_map
-
+    return index, doc_len, recipe_map

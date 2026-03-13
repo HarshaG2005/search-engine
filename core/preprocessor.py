@@ -1,6 +1,8 @@
 import string
+
 from nltk import PorterStemmer
 from nltk.corpus import stopwords
+
 stopwords = set(stopwords.words("english"))
 
 ps = PorterStemmer()
