@@ -1,25 +1,7 @@
 from nltk.metrics.distance import edit_distance
 
+from core.indexer import get_bigrams
 from core.preprocessor import preprocess
-
-
-def get_bigrams(word):
-    """Generate bigrams from a word."""
-    word = word.lower()
-    return [word[i : i + 2] for i in range(len(word) - 1)]
-
-
-def build_bigram_index(indexes):
-    """Builds a bigram index from the existing term index."""
-    bigram_index = {}
-    for word in indexes.keys():
-        bigrams = get_bigrams(word)
-        for bigram in bigrams:
-            if bigram not in bigram_index:
-                bigram_index[bigram] = []
-            if word not in bigram_index[bigram]:
-                bigram_index[bigram].append(word)
-    return bigram_index
 
 
 def get_candidates(misspelled, bigram_index):
@@ -61,11 +43,8 @@ def spell_correct(query, indexes, bigram_index, threshold=2):
     return best_match if best_match else query
 
 
-def transform(raw_query, indexes):
+def transform(raw_query, indexes, bigram_index):
     tokens = preprocess(raw_query)  # ["chiken", "cocnut", "curi"]
-    bigram_index = build_bigram_index(
-        indexes
-    )  # build bigram index from current term index
 
     corrected = []
     for token in tokens:

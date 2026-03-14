@@ -4,6 +4,25 @@ import math
 from core.preprocessor import preprocess
 
 
+def get_bigrams(word):
+    """Generate bigrams from a word."""
+    word = word.lower()
+    return [word[i : i + 2] for i in range(len(word) - 1)]
+
+
+def build_bigram_index(indexes):
+    """Builds a bigram index from the existing term index."""
+    bigram_index = {}
+    for word in indexes.keys():
+        bigrams = get_bigrams(word)
+        for bigram in bigrams:
+            if bigram not in bigram_index:
+                bigram_index[bigram] = []
+            if word not in bigram_index[bigram]:
+                bigram_index[bigram].append(word)
+    return bigram_index
+
+
 def build_index(recipes):
     """Builds an inverted index from the list of recipes."""
     # term -> doc_id -> stats
@@ -41,5 +60,5 @@ def build_index(recipes):
             posting["tf"] += 1
             posting["pos"].append(position)
             posting["fields"][field] += 1
-
-    return index, doc_len, recipe_map
+    bigram_index = build_bigram_index(index)
+    return index, doc_len, recipe_map, bigram_index

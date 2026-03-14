@@ -6,18 +6,19 @@ _index = None
 _doc_len = None
 _avg_doc_len = None
 _recipe_map = None
+_bigram_index = None
 
 
 def _ensure_loaded():
-    global _index, _doc_len, _avg_doc_len, _recipe_map
+    global _index, _doc_len, _avg_doc_len, _recipe_map, _bigram_index
     if _index is None:  # only loads if not already loaded
-        _index, _doc_len, _avg_doc_len, _recipe_map = load()
+        _index, _doc_len, _avg_doc_len, _recipe_map, _bigram_index = load()
 
 
 def search(raw_query, top_k=5):
     _ensure_loaded()  # first call loads, all future calls skip
 
-    query_terms = transform(raw_query, _index)
+    query_terms = transform(raw_query, _index, _bigram_index)  # spell correct first
     N = len(_doc_len)
     scores = {}
 
