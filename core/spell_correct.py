@@ -2,6 +2,7 @@ from nltk.metrics.distance import edit_distance
 
 from core.indexer import get_bigrams
 from core.preprocessor import preprocess
+from core.expand import expand
 
 
 def get_candidates(misspelled, bigram_index):
@@ -52,5 +53,6 @@ def transform(raw_query, indexes, bigram_index):
             token, indexes, bigram_index, threshold=2
         )  # one token at a time
         corrected.append(fixed)
+    expanded = expand(corrected, thesaurus)  # add synonyms
 
-    return corrected
+    return expanded
