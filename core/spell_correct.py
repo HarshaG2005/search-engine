@@ -1,8 +1,7 @@
 from nltk.metrics.distance import edit_distance
-
 from core.indexer import get_bigrams
 from core.preprocessor import preprocess
-from core.expand import expand
+from core.expander import expand
 
 
 def get_candidates(misspelled, bigram_index):
