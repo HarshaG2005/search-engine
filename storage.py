@@ -41,3 +41,7 @@ def load_recipe():
     with open(Path("data/recipe.json"), encoding="utf-8") as f:
         recipes = json.load(f)
     return recipes
+def load_thesaurus():
+    with open(Path("data/thesaurus.json"), encoding="utf-8") as f:
+        thesaurus = json.load(f)
+    return thesaurus

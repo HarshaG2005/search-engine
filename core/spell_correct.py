@@ -43,7 +43,7 @@ def spell_correct(query, indexes, bigram_index, threshold=2):
     return best_match if best_match else query
 
 
-def transform(raw_query, indexes, bigram_index):
+def transform(raw_query, indexes, bigram_index,thesaurus):
     tokens = preprocess(raw_query)  # ["chiken", "cocnut", "curi"]
 
     corrected = []
