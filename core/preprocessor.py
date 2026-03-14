@@ -1,5 +1,5 @@
 import string
-
+import nltk
 from nltk import PorterStemmer
 nltk.download("stopwords", quiet=True)
 from nltk.corpus import stopwords
