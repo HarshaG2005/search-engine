@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from core.preprocessor import preprocess
 
 out_dir = Path("index_data")
 out_dir.mkdir(exist_ok=True)
@@ -43,5 +44,10 @@ def load_recipe():
     return recipes
 def load_thesaurus():
     with open(Path("data/thesaurus.json"), encoding="utf-8") as f:
-        thesaurus = json.load(f)
-    return thesaurus
+        raw = json.load(f)
+        processed = {}
+    for key, values in raw.items():
+        stemmed_key = preprocess(key)
+        if stemmed_key:
+            processed[stemmed_key[0]] = values
+    return processed

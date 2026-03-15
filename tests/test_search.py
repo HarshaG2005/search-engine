@@ -25,3 +25,8 @@ def test_search():
     results = search("beef stew")
     assert len(results) > 0
     assert any("beef stew" in r["title"].lower() for r in results)
+    
+    # Test case 4: Search with singlish query
+    results = search("kukulmas cariya")
+    assert len(results) > 0
+    assert any("chicken curry" in r["title"].lower() for r in results)

@@ -9,11 +9,14 @@ from nltk.metrics.distance import edit_distance
 from core.indexer import get_bigrams
 from core.preprocessor import preprocess
 from core.spell_correct import get_candidates, spell_correct, transform
-from storage import load
+from storage import load, load_thesaurus
+from core.expander import expand
 
 
 def test_transform():
     indexes, doc_len, avg_doc_len, recipe_map, bigram_index = load()
-    assert transform("chikin curry", indexes, bigram_index) == ["chicken", "curri"]
-    assert transform("lentil sup", indexes, bigram_index) == ["lentil", "soup"]
-    assert transform("phish thacos", indexes, bigram_index) == ["fish", "taco"]
+    thesaurus = load_thesaurus()
+    assert transform("chikin curry", indexes, bigram_index,thesaurus) == ["chicken", "curri"]
+    assert transform("lentil sup", indexes, bigram_index,thesaurus) == ["lentil", "soup"]
+    assert transform("phish thacos", indexes, bigram_index,thesaurus) == ["fish", "taco"]
+    assert transform("kukulmas", indexes, bigram_index,thesaurus) == ["kukulma","chicken"]
