@@ -1,0 +1,4 @@
+selector for recipe links=response.css('div.dr-archive-single  a[itemprop="url"]::attr(href)').getall()
+title=response.css('h2.dr-title::text').get()
+ingredients=response.css('li.recipe-ingredient label::text').getall()
+image url=response.css('div.dr-image img::attr(src)').get()

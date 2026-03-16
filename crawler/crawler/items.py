@@ -6,7 +6,9 @@
 import scrapy
 
 
-class CrawlerItem(scrapy.Item):
+class RecipeScraperItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
-    pass
+    Titel = scrapy.Field()
+    ingridients = scrapy.Field()
+    img_url = scrapy.Field()

@@ -1,5 +1,19 @@
-{
+{    
+    "amba": ["mango"],
+    "annasi": ["pineapple"],
+    "aligeta pera": ["avacado"],
+    "Banis":["ban"],
+    "biscat": ["biscuit","cookies"],
     "coconut": ["coconut", "cocnut", "cocount"],
     "kukulmas": ["chicken"],
-    "cariya": ["curry"]
+    "uru mas": ["pork"],
+    "malu":["fish"],
+    "harak mas": ["beef"],
+    "cariya": ["curry"],
+    "sambola": ["sambal"],
+    "kiri": ["milk"],
+    "kokis":["rosette cookies"],
+    "kavum": ["oil cake"]
+
+
 }
