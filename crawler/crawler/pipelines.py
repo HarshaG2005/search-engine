@@ -28,7 +28,13 @@ class CrawlerPipeline:
         return item
 
     def close_spider(self, spider):
-        output_path = os.path.join(os.path.dirname(__file__), '..', '..', '..', 'data', 'recipe.json')
+        # go up to search-engine/ root, then into data/
+        base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+        output_path = os.path.join(base_dir, 'data', 'recipe.json')
+        
+        # print so you can see exactly where it's saving
+        spider.logger.info(f"Saving to: {output_path}")
+        
         with open(output_path, "w", encoding="utf-8") as f:
             json.dump(self.recipes, f, indent=2, ensure_ascii=False)
         spider.logger.info(f"Saved {len(self.recipes)} recipes to recipe.json")

@@ -12,3 +12,4 @@ class RecipeScraperItem(scrapy.Item):
     Titel = scrapy.Field()
     ingridients = scrapy.Field()
     img_url = scrapy.Field()
+    url = scrapy.Field()
