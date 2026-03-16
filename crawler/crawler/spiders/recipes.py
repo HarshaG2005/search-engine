@@ -1,4 +1,5 @@
 import scrapy
+from crawler.items import RecipeScraperItem
 
 class RecipesSpider(scrapy.Spider):
     name = "recipes"
@@ -24,3 +25,5 @@ class RecipesSpider(scrapy.Spider):
         recipe["Titel"]=response.css('h2.dr-title::text').get()
         recipe["ingridients"]=response.css('li.recipe-ingredient label::text').getall()
         recipe["img_url"]=response.css('div.dr-image img::attr(src)').get()
+        recipe["url"]=response.url
+        yield recipe
