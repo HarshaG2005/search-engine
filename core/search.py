@@ -1,6 +1,6 @@
 from core.query import bm25, field_boost, format_results, proximity_boost
 from core.spell_correct import transform
-from storage import load, load_thesaurus
+from core.storage import load, load_thesaurus
 
 _index = None
 _doc_len = None
@@ -40,4 +40,4 @@ def search(raw_query, top_k=5):
 
     ranked = sorted(scores.items(), key=lambda x: x[1], reverse=True)
     return format_results(ranked, top_k, _recipe_map)
-print(search("malu", top_k=3))
+print(search("rosette cookies", top_k=10))

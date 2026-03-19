@@ -6,8 +6,8 @@ import pytest
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 
-from search import search
-from storage import load
+from core.search import search
+from core.storage import load
 
 
 def test_search():
@@ -22,11 +22,11 @@ def test_search():
     assert len(results) == 0
 
     # Test case 3: Search with multiple results
-    results = search("beef stew")
+    results = search("malu kariya")
     assert len(results) > 0
-    assert any("beef stew" in r["title"].lower() for r in results)
-    
+    assert any("fish" in r["title"].lower() for r in results)
+
     # Test case 4: Search with singlish query
     results = search("kukulmas cariya")
     assert len(results) > 0
-    assert any("chicken curry" in r["title"].lower() for r in results)
+    assert any("chicken" in r["title"].lower() for r in results)

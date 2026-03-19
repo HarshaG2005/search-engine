@@ -9,7 +9,7 @@ import scrapy
 class RecipeScraperItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
-    Titel = scrapy.Field()
-    ingridients = scrapy.Field()
+    Title = scrapy.Field()
+    ingredients = scrapy.Field()
     img_url = scrapy.Field()
     url = scrapy.Field()

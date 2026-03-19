@@ -1,5 +1,5 @@
 from core.indexer import build_index
-from storage import load_recipe, save
+from core.storage import load_recipe, save
 
 
 def run_indexing():

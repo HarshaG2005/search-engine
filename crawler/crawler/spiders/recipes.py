@@ -22,8 +22,8 @@ class RecipesSpider(scrapy.Spider):
 
     def parse_recipe(self, response):
         recipe=RecipeScraperItem()
-        recipe["Titel"]=response.css('h2.dr-title::text').get()
-        recipe["ingridients"]=response.css('li.recipe-ingredient label::text').getall()
+        recipe["Title"]=response.css('h2.dr-title::text').get()
+        recipe["ingredients"]=response.css('li.recipe-ingredient label::text').getall()
         recipe["img_url"]=response.css('div.dr-image img::attr(src)').get()
         recipe["url"]=response.url
         yield recipe

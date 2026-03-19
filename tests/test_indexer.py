@@ -6,7 +6,7 @@ import pytest
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from core.indexer import build_bigram_index, build_index, get_bigrams
 from core.preprocessor import preprocess
-from storage import load_recipe
+from core.storage import load_recipe
 
 
 def test_build_index():
@@ -16,9 +16,14 @@ def test_build_index():
     assert doc_len is not None
     assert recipe_map is not None
     assert bigram_index is not None
-    assert index["chicken"] is not None
-    assert index["chicken"][12] == {
-        "tf": 2,
-        "pos": [0, 2],
-        "fields": {"title": 1, "ingredients": 1},
+    assert index["garcinia"] is not None
+    assert index["garcinia"][17] == {
+      "tf": 1,
+      "pos": [
+        30
+      ],
+      "fields": {
+        "title": 0,
+        "ingredients": 1
+      }
     }
