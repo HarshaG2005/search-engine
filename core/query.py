@@ -66,5 +66,5 @@ def format_results(ranked, top_k=5, recipe_map=None):
     results = []
     for doc_id, score in ranked[:top_k]:
         recipe = recipe_map.get(doc_id)
-        results.append({"title": recipe["title"], "score": round(score, 4)})
+        results.append({"title": recipe["title"], "score": round(score, 4), "img_url": recipe.get("img_url", ""), "url": recipe.get("url", "")})
     return results

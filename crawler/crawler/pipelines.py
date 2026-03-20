@@ -19,8 +19,8 @@ class CrawlerPipeline:
     def process_item(self, item, spider):
         self.recipes.append({
             "id": self.current_id,
-            "title": item.get("Titel", "").strip(),
-            "ingredients": [i.strip() for i in item.get("ingridients", []) if i.strip()],
+            "title": item.get("Title", "").strip(),
+            "ingredients": [i.strip() for i in item.get("Ingredients", []) if i.strip()],
             "img_url": item.get("img_url", ""),
             "url": item.get("url", "")
         })

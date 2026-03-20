@@ -40,4 +40,4 @@ def search(raw_query, top_k=5):
 
     ranked = sorted(scores.items(), key=lambda x: x[1], reverse=True)
     return format_results(ranked, top_k, _recipe_map)
-print(search("rosette cookies", top_k=10))
+print(search("Malu Cari", top_k=2))

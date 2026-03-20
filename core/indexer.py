@@ -42,7 +42,8 @@ def build_index(recipes):
         doc_id = recipe["id"]
         recipe_map[doc_id] = {
             "title": recipe.get("title", ""),
-            "ingredients": recipe.get("ingredients", []),
+            "img_url": recipe.get("img_url", ""),
+            "url": recipe.get("url", ""),
         }
 
         title_tokens = preprocess(recipe.get("title", ""))

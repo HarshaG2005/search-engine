@@ -13,6 +13,9 @@
     "sambola": ["sambal"],
     "kiri": ["milk"],
     "kokis":["rosette cookies"],
+    "rosette cookies": ["kokis"],
+    "Malu cariya": ["fish curry"],
+    "Malu miris": ["capsicum"],
     "kavum": ["oil cake"]
 
 
