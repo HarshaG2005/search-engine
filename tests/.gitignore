@@ -1,9 +1,0 @@
-/__pycache__
-data/__pycache__
-indexer/__pycache__
-search/__pycache__
-storage/__pycache__
-.pytest_cache__
-d.py
-dt.json
-sl_synonyms.json
