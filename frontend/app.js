@@ -10,11 +10,12 @@ searchButton.addEventListener('click',()=>{
 })
 async function fetchSearchResults(query){
     try{
-        const response=await fetch(`http://localhost:8000/search?q=${encodeURIComponent(query)}&top_k=5`);
-        if(!response.ok){
-            throw new Error('Network response was not ok');
-        }
+        const response=await fetch(`http://127.0.0.1:8000/search?q=${encodeURIComponent(query)}&top_k=5`);
+        // if(!response.ok){
+        //     throw new Error('Network response was not ok');
+        // }
         const data=await response.json();
+        console.log('Search results:',data);
         displaySearchResults(data.results);
     }    catch(error){
         console.error('Error fetching search results:',error);
