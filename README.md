@@ -15,11 +15,13 @@ This project is inspired by concepts from *Search Engines: Information Retrieval
 
 CurryScope is built around two main pipelines:
 
-User Query → Query Pipeline → Ranked Results  
-                             ↑  
-                     Inverted Index  
-                             ↑  
-                    Indexing Pipeline  
+```
+User Query → Query Pipeline → Ranked Results
+                             ↑
+                     Inverted Index
+                             ↑
+                    Indexing Pipeline
+```
 
 ---
 
@@ -28,7 +30,7 @@ User Query → Query Pipeline → Ranked Results
 The indexing pipeline prepares all data structures required for efficient search.
 
 ### 1. Text Acquisition
-- Recipe data is collected using a Scrapy-based web crawler  
+- Recipe data is collected using a Scrapy-based web crawler
 - Crawling is done responsibly following `robots.txt`
 
 ---
@@ -37,17 +39,19 @@ The indexing pipeline prepares all data structures required for efficient search
 
 Standard NLP preprocessing is applied:
 
-- Tokenization  
-- Lowercasing (Normalization)  
-- Stopword Removal  
-- Stemming  
+- Tokenization
+- Lowercasing (Normalization)
+- Stopword Removal
+- Stemming
 
 **Example:**
 
-"Sri Lankan Chicken Curry"  
-→ ["sri", "lankan", "chicken", "curry"]  
-→ ["sri", "lankan", "chicken", "curri"]  
+```
+"Sri Lankan Chicken Curry"
+→ ["sri", "lankan", "chicken", "curry"]
+→ ["sri", "lankan", "chicken", "curri"]
 → ["chicken", "curri"]
+```
 
 ---
 
@@ -55,7 +59,7 @@ Standard NLP preprocessing is applied:
 
 An inverted index maps terms to documents.
 
-Example:
+**Example:**
 
 ```json
 {
@@ -64,17 +68,21 @@ Example:
     "40": { "tf": 1, "positions": [3] }
   }
 }
+```
+
+---
+
 ### 4. Additional Statistics (for Ranking)
 
 During indexing, several auxiliary statistics are computed and stored to support efficient and accurate ranking at query time.
 
 These include:
 
-- **doc_len.json** — stores the length of each document  
-- **avg_doc_len** — average document length across the collection  
-- **doc_field_len.json** — length of specific fields (e.g., title, ingredients) per document  
-- **avg_field_len.json** — average length for each field  
-- **recipe_map.json** — metadata mapping used for fast result formatting and retrieval  
+- **doc_len.json** — stores the length of each document
+- **avg_doc_len** — average document length across the collection
+- **doc_field_len.json** — length of specific fields (e.g., title, ingredients) per document
+- **avg_field_len.json** — average length for each field
+- **recipe_map.json** — metadata mapping used for fast result formatting and retrieval
 
 These statistics are essential for ranking algorithms like **BM25**, which rely on term frequency, document length normalization, and collection-level averages.
 
@@ -86,7 +94,11 @@ To efficiently handle misspelled queries, CurryScope builds a **K-gram index** d
 
 A K-gram is a sequence of *k* consecutive characters. In this system, **bigrams (k = 2)** are used.
 
-**Example:**"curry" → ["cu", "ur", "rr", "ry"]
+**Example:**
+
+```
+"curry" → ["cu", "ur", "rr", "ry"]
+```
 
 This structure allows the system to quickly identify candidate words that share similar character patterns with a query term, significantly reducing the search space for spell correction.
 
@@ -104,10 +116,10 @@ The query pipeline handles user queries in real time and transforms them into ra
 
 The query undergoes the same preprocessing steps used during indexing:
 
-- Tokenization  
-- Normalization (lowercasing)  
-- Stopword removal  
-- Stemming  
+- Tokenization
+- Normalization (lowercasing)
+- Stopword removal
+- Stemming
 
 This ensures consistency between indexed data and incoming queries.
 
@@ -125,11 +137,11 @@ The K-gram index is used to retrieve a set of candidate terms that are similar t
 Each candidate is then evaluated using **Levenshtein Distance (Edit Distance)**, which measures the minimum number of operations required to transform one word into another.
 
 Allowed operations:
-- Insertion  
-- Deletion  
-- Substitution  
+- Insertion
+- Deletion
+- Substitution
 
-**Example:**"curri" → "curry" → Edit Distance = 1
+**Example:** `"curri"` → `"curry"` → Edit Distance = 1
 
 ---
 
@@ -156,11 +168,13 @@ Each cell represents the minimum number of operations required to transform pref
 
 To handle local language variations, CurryScope applies a manually curated query expansion step.
 
-Examples:
+**Examples:**
 
-- kukulmas → chicken  
-- isso → prawn  
-- hodi → curry  
+| Singlish Term | English Equivalent |
+|---|---|
+| kukulmas | chicken |
+| isso | prawn |
+| hodi | curry |
 
 This significantly improves recall for culturally specific queries that would otherwise fail in traditional search systems.
 
@@ -172,10 +186,10 @@ After transformation, each query term is used to retrieve matching documents fro
 
 Two common processing strategies are supported:
 
-- **TAAT (Term-at-a-Time)**  
-- **DAAT (Document-at-a-Time)**  
+- **TAAT (Term-at-a-Time)**
+- **DAAT (Document-at-a-Time)**
 
-Both approaches produce the same final results, differing only in how scores are accumulated during processing.I used TAAT strategy:)
+Both approaches produce the same final results, differing only in how scores are accumulated during processing. CurryScope uses the **TAAT** strategy.
 
 ---
 
@@ -183,9 +197,10 @@ Both approaches produce the same final results, differing only in how scores are
 
 Documents are ranked using:
 
-- **BM25 ranking algorithm**  
-- Field-based weighting (e.g., title vs ingredients)  
-- Term frequency and precomputed document statistics  
+- **BM25F ranking algorithm** with per-field length normalization
+- Field-based weighting (title weighted higher than ingredients)
+- Term frequency saturation to prevent dominance by high-frequency terms
+- Proximity boosting for multi-term queries
 
 Documents are then sorted in descending order of relevance score.
 
@@ -195,38 +210,39 @@ Documents are then sorted in descending order of relevance score.
 
 The system returns:
 
-- A ranked list of recipes  
-- Recipe titles  
-- Relevance scores  
+- A ranked list of recipes
+- Recipe titles
+- Relevance scores
+- Images and source URLs
 
 ---
 
 ## 🚀 Features
 
-- Domain-specific search (Sri Lankan recipes)  
-- Singlish → English query expansion  
-- Spell correction using K-grams + Levenshtein Distance  
-- BM25 ranking with field-aware scoring  
-- Efficient inverted index-based retrieval  
+- Domain-specific search (Sri Lankan recipes)
+- Singlish → English query expansion via curated thesaurus
+- Spell correction using K-grams + Levenshtein Distance
+- BM25F ranking with field-aware scoring and proximity boosting
+- Efficient inverted index-based retrieval
 
 ---
 
 ## 🛠️ Tech Stack
 
-- Python  
-- Scrapy  
-- fastapi
-- Javascript
-- CSS
-- HTML
+- **Python** — core engine
+- **Scrapy** — web crawling
+- **FastAPI** — REST API
+- **NLTK** — tokenization and stemming
+- **JavaScript / HTML / CSS** — frontend
+
 ---
 
 ## 📌 Future Improvements
 
-- Evaluation metrics (Precision, Recall, MAP)  
-- Autocomplete and query suggestions  
-- Neural ranking models  
-- Sinhala native language support  
+- Evaluation metrics (Precision, Recall, MAP)
+- Autocomplete and query suggestions
+- Neural ranking models
+- Sinhala native language support
 
 ---
 
