@@ -6,7 +6,7 @@ out_dir = Path("index_data")
 out_dir.mkdir(exist_ok=True)
 
 
-def save(index, doc_len, avg_doc_len, recipe_map, bigram_index):
+def save(index, doc_len, avg_doc_len, recipe_map, bigram_index,doc_field_len,avg_field_len):
     (out_dir / "index.json").write_text(
         json.dumps(index, ensure_ascii=False, indent=2, default=list), encoding="utf-8"
     )
@@ -23,6 +23,16 @@ def save(index, doc_len, avg_doc_len, recipe_map, bigram_index):
         json.dumps(bigram_index, ensure_ascii=False, indent=2, default=list),
         encoding="utf-8",
     )
+    (out_dir / "doc_field_len.json").write_text(
+        json.dumps(doc_field_len, ensure_ascii=False, indent=2, default=list),
+        encoding="utf-8",
+    )
+    (out_dir / "avg_field_len.json").write_text(
+        json.dumps(avg_field_len, ensure_ascii=False, indent=2, default=list),
+        encoding="utf-8",
+    )
+
+
 
 
 def load():
@@ -35,7 +45,9 @@ def load():
     bigram_index = json.loads(
         (out_dir / "bigram_index.json").read_text(encoding="utf-8")
     )
-    return index, doc_len, avg_doc_len, recipe_map, bigram_index
+    doc_field_len=json.loads((out_dir/"doc_field_len.json").read_text(encoding="utf-8"))
+    avg_field_len=json.loads((out_dir/"avg_field_len.json").read_text(encoding="utf-8"))
+    return index, doc_len, avg_doc_len, recipe_map, bigram_index,doc_field_len,avg_field_len
 
 
 def load_recipe():

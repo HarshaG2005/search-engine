@@ -37,6 +37,7 @@ def build_index(recipes):
     )
     doc_len = {}  # doc_id -> total tokens indexed
     recipe_map = {}  # for easy lookup later
+    doc_field_len={} # doc_id -> field -> token count
 
     for recipe in recipes:
         doc_id = recipe["id"]
@@ -48,7 +49,11 @@ def build_index(recipes):
 
         title_tokens = preprocess(recipe.get("title", ""))
         ing_tokens = preprocess(" ".join(recipe.get("ingredients", [])))
-
+        doc_field_len[doc_id]={
+            'title':len(title_tokens),
+            'ingredients':len(ing_tokens)
+        }
+        
         # We create one token stream so positions are consistent
         tokens = []
         tokens.extend(("title", t) for t in title_tokens)
@@ -62,4 +67,9 @@ def build_index(recipes):
             posting["pos"].append(position)
             posting["fields"][field] += 1
     bigram_index = build_bigram_index(index)
-    return index, doc_len, recipe_map, bigram_index
+    N = len(doc_len)
+    avg_field_len = {
+    "title": sum(d["title"] for d in doc_field_len.values()) / N,
+    "ingredients": sum(d["ingredients"] for d in doc_field_len.values()) / N
+    }
+    return index, doc_len, recipe_map, bigram_index,doc_field_len,avg_field_len
