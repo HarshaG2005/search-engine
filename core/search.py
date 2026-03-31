@@ -27,6 +27,8 @@ def search(raw_query, top_k=5):
     scores = {}
 
     for term in query_terms:
+        print('////////')
+        print(f"Searching for term: '{term}' in Inverted Index")
         if term not in _index:
             continue
         df = len(_index[term])
@@ -46,6 +48,12 @@ def search(raw_query, top_k=5):
 
     for doc_id in scores:
         scores[doc_id] *= proximity_boost(query_terms, doc_id, _index)
+    print(f'////////////')
+    print(f"Scores of documents before ranking: {scores}")
 
     ranked = sorted(scores.items(), key=lambda x: x[1], reverse=True)
+    print(f"Top {top_k} results: {ranked[:top_k]}\n")
+    print('//////////')
+    print(f"Final formatted results: {[ doc_id for doc_id,_ in ranked[:top_k]]}")
     return format_results(ranked, top_k, _recipe_map)
+    

@@ -44,6 +44,7 @@ def spell_correct(query, indexes, bigram_index, threshold=2):
 
 
 def transform(raw_query, indexes, bigram_index,thesaurus):
+    print(f"Original query: '{raw_query}'")
     tokens = preprocess(raw_query)  # ["chiken", "cocnut", "curi"]
 
     corrected = []
@@ -53,5 +54,6 @@ def transform(raw_query, indexes, bigram_index,thesaurus):
         )  # one token at a time
         corrected.append(fixed)
     expanded = expand(corrected, thesaurus)  # add synonyms
+    print(f"Transformed query: {expanded}")
 
     return expanded
