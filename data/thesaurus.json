@@ -16,7 +16,11 @@
     "rosette cookies": ["kokis"],
     "Malu cariya": ["fish curry"],
     "Malu miris": ["capsicum"],
-    "kavum": ["oil cake"]
+    "kavum": ["oil cake"],
+    "kiri topi":["milk toffee"],
+    "milk toffee": ["kiri toffee"],
+    "kiri the":["milk tea"],
+    "milk tea": ["kiri the"]
 
 
 }
