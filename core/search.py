@@ -8,12 +8,14 @@ _avg_doc_len = None
 _recipe_map = None
 _bigram_index = None
 _thesaurus = None
+_avg_field_len=None
+_doc_field_len=None
 
 
 def _ensure_loaded():
-    global _index, _doc_len, _avg_doc_len, _recipe_map, _bigram_index, _thesaurus
+    global _index, _doc_len, _avg_doc_len, _recipe_map, _bigram_index, _thesaurus, _avg_field_len, _doc_field_len
     if _index is None:  # only loads if not already loaded
-        _index, _doc_len, _avg_doc_len, _recipe_map, _bigram_index = load()
+        _index, _doc_len, _avg_doc_len, _recipe_map, _bigram_index, _avg_field_len, _doc_field_len = load()
         _thesaurus = load_thesaurus()
 
 
@@ -29,9 +31,15 @@ def search(raw_query, top_k=5):
             continue
         df = len(_index[term])
         for doc_id, posting in _index[term].items():
-            tf = posting["tf"]
+            doc_id=str(doc_id)
+            print(f"Calculating score for doc {doc_id} and term '{term}'")
+            
+            title_len=_doc_field_len[doc_id]["title"]
+            ingr_len=_doc_field_len[doc_id]["ingridients"]
+            avg_title_len=_avg_field_len["title"]
+            avg_ingr_len=_avg_field_len["ingridients"]
             dl = _doc_len[doc_id]
-            score = bm25(tf, df, N, dl, _avg_doc_len)
+            score = bm25(tf_title,tf_ingr,title_len,ingr_len, df, N, dl, _avg_doc_len)
             score *= field_boost(posting)
             scores[doc_id] = scores.get(doc_id, 0) + score
 
