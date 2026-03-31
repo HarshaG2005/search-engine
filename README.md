@@ -254,8 +254,10 @@ Actively being developed as a learning and portfolio project.
 
 ## 💡 Author Note
 
+Hey! I am Harsha 😁
+
 This project is part of my journey in learning Information Retrieval and backend systems.
 
-I am building everything from scratch to deeply understand how real-world search engines work.
+I am building this project to deeply understand how real-world backend systems work.
 
 Contributions, suggestions, and feedback are always welcome 🚀
