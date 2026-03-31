@@ -6,18 +6,18 @@ G_TITLE = 0.7
 G_INGREDIENTS = 0.3
 
 
-def bm25(tf_title,tf_ingr,title_len,ingr_len, df, N, doc_len, avg_doc_len):
+def bm25(tf_title,tf_ingr,title_len,ingr_len, df, N, doc_len,avg_title_len,avg_ingr_len):
     idf = math.log((N - df + 0.5) / (df + 0.5) + 1)
     # tf_score = ((K1 + 1) * tf) / (K1 * ((1 - B) + B * (doc_len / avg_doc_len)) + tf)
     tf = (3.0 * tf_title)   / ((1 - 0.5)  + 0.5  *(title_len   / avg_title_len))+ (1.0 * tf_ingr)    / ((1 - 0.75) + 0.75 * (ingr_len    / avg_ingr_len))
     return idf * tf
 
 
-def field_boost(posting):
-    return 1 + (
-        G_TITLE * posting["fields"]["title"]
-        + G_INGREDIENTS * posting["fields"]["ingredients"]
-    )
+# def field_boost(posting):
+#     return 1 + (
+#         G_TITLE * posting["fields"]["title"]
+#         + G_INGREDIENTS * posting["fields"]["ingredients"]
+#     )
 
 
 def proximity(pos1, pos2):
