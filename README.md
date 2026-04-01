@@ -8,12 +8,17 @@ It solves a real-world vocabulary gap: users often search using **Singlish/Sinha
 CurryScope bridges this gap using preprocessing, spell correction, and a custom-built Singlish → English query expansion system.
 
 This project is inspired by concepts from *Search Engines: Information Retrieval in Practice* (Croft et al.).
+<video src="https://github.com/user-attachments/assets/d18c49a0-e81e-4392-80d2-842344e0ad0b" width="600" controls></video>
 
 ---
 
 ## 🧠 System Overview
 
 CurryScope is built around two main pipelines:
+
+
+
+
 
 ```
 User Query → Query Pipeline → Ranked Results
@@ -107,8 +112,13 @@ This structure allows the system to quickly identify candidate words that share 
 ## 🔍 Query Pipeline (Online)
 
 The query pipeline handles user queries in real time and transforms them into ranked search results.
+<video src="https://github.com/user-attachments/assets/aadc1c86-197f-4bb5-b88d-e7c7a61643a8" width="600" controls></video>
 
 ---
+
+
+
+
 
 ### 1. Query Transformation
 
